@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Background="Black" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
     <Grid>
-            <Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
@@ -19,13 +19,13 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label x:Name="labelColorOne" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" BorderBrush="Transparent" BorderThickness="7"/>
-        <Label x:Name="labelColorTwo" Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" BorderBrush="Transparent" BorderThickness="7"/>
-        <Label x:Name="labelColorThree" Grid.Column="3" Grid.Row="0" Grid.RowSpan="3" BorderBrush="Transparent" BorderThickness="7"/>
-        <Label x:Name="labelColorFour" Grid.Column="4" Grid.Row="0" Grid.RowSpan="3" BorderBrush="Transparent" BorderThickness="7"/>
+        <Label x:Name="labelColorOne" Grid.Column="0" Grid.Row="0" Grid.RowSpan="1"/>
+        <Label x:Name="labelColorTwo" Grid.Column="1" Grid.Row="0" Grid.RowSpan="1"/>
+        <Label x:Name="labelColorThree" Grid.Column="3" Grid.Row="0" Grid.RowSpan="1"/>
+        <Label x:Name="labelColorFour" Grid.Column="4" Grid.Row="0" Grid.RowSpan="1"/>
         <TextBox x:Name="generatedCodeTextBox" Grid.Column="2" Grid.Row="0" Height="30" VerticalAlignment="Bottom" IsEnabled="False"/>
         <TextBox x:Name="timerTextBox" Grid.Column="2" Grid.Row="0" Height="30" VerticalAlignment="Top" IsEnabled="False"/>
-        <ComboBox x:Name="comboBoxColour1" Grid.ColumnSpan="1" Grid.Column="0" Grid.Row="1" Height="50" SelectionChanged="ComboBoxColour_SelectionChanged1">
+        <ComboBox x:Name="comboBoxColour1" Grid.Column="0" Grid.Row="0" Height="30" SelectionChanged="ComboBoxColour_SelectionChanged1">
             <ComboBoxItem Content="Red"/>
             <ComboBoxItem Content="Yellow"/>
             <ComboBoxItem Content="Orange"/>
@@ -33,7 +33,7 @@
             <ComboBoxItem Content="Green"/>
             <ComboBoxItem Content="Blue"/>
         </ComboBox>
-        <ComboBox x:Name="comboBoxColour2" Grid.ColumnSpan="1" Grid.Column="1" Grid.Row="1" Height="50" SelectionChanged="ComboBoxColour_SelectionChanged1">
+        <ComboBox x:Name="comboBoxColour2" Grid.Column="1" Grid.Row="0" Height="30" SelectionChanged="ComboBoxColour_SelectionChanged1">
             <ComboBoxItem Content="Red"/>
             <ComboBoxItem Content="Yellow"/>
             <ComboBoxItem Content="Orange"/>
@@ -41,7 +41,7 @@
             <ComboBoxItem Content="Green"/>
             <ComboBoxItem Content="Blue"/>
         </ComboBox>
-        <ComboBox x:Name="comboBoxColour3" Grid.ColumnSpan="1" Grid.Column="3" Grid.Row="1" Height="50" SelectionChanged="ComboBoxColour_SelectionChanged1">
+        <ComboBox x:Name="comboBoxColour3" Grid.Column="3" Grid.Row="0" Height="30" SelectionChanged="ComboBoxColour_SelectionChanged1">
             <ComboBoxItem Content="Red"/>
             <ComboBoxItem Content="Yellow"/>
             <ComboBoxItem Content="Orange"/>
@@ -49,7 +49,7 @@
             <ComboBoxItem Content="Green"/>
             <ComboBoxItem Content="Blue"/>
         </ComboBox>
-        <ComboBox x:Name="comboBoxColour4" Grid.ColumnSpan="1" Grid.Column="4" Grid.Row="1" Height="50" SelectionChanged="ComboBoxColour_SelectionChanged1">
+        <ComboBox x:Name="comboBoxColour4" Grid.Column="4" Grid.Row="0" Height="30" SelectionChanged="ComboBoxColour_SelectionChanged1">
             <ComboBoxItem Content="Red"/>
             <ComboBoxItem Content="Yellow"/>
             <ComboBoxItem Content="Orange"/>
@@ -57,6 +57,7 @@
             <ComboBoxItem Content="Green"/>
             <ComboBoxItem Content="Blue"/>
         </ComboBox>
-        <Button x:Name="checkButton" Content="Check Button" Grid.RowSpan="1" Grid.Column="2" Grid.Row="1" Background="Silver" FontWeight="UltraBold" Click="checkButton_Click"/>
+        <Button x:Name="checkButton" Content="Check Button" Grid.RowSpan="1" Grid.Column="2" Grid.Row="0" Background="Silver" Panel.ZIndex="-1" FontWeight="UltraBold" Click="checkButton_Click"/>
+        <ListBox x:Name="colorHistoryListBox" Grid.RowSpan="2" Grid.ColumnSpan="5" Grid.Row="1" Background="Black"/>
     </Grid>
 </Window>

@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -184,26 +185,65 @@ namespace C_mastermindSprint1
 
             }
         }
-
+       
         private void checkButton_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(comboBoxColour1.Text) ||
+              string.IsNullOrEmpty(comboBoxColour2.Text) ||
+              string.IsNullOrEmpty(comboBoxColour3.Text) ||
+              string.IsNullOrEmpty(comboBoxColour4.Text))
+            {
+                MessageBox.Show("Je moet een kleur kiezen", "Input Fout", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             guessAttempts++;
             this.Title = $"Poging: " + guessAttempts;
             UpdateTitle();
 
             if (guessAttempts >= 10)
-            { timer.Stop(); 
-                MessageBox.Show("Je hebt geen pogingen meer over, het spel is afgelopen", "Game Over", MessageBoxButton.OK, MessageBoxImage.Warning);
+            {
+                timer.Stop();
+                MessageBox.Show($"Je hebt geen pogingen meer over. De correcte code was {string.Join(", ", secretCode)}", "Game Over", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             StartCountDown();
-            
+
             string checkColor1 = comboBoxColour1.Text;
             string checkColor2 = comboBoxColour2.Text;
             string checkColor3 = comboBoxColour3.Text;
             string checkColor4 = comboBoxColour4.Text;
             List<string> inputColor = new List<string> { checkColor1, checkColor2, checkColor3, checkColor4 };
+
+            StackPanel colorPanel = new StackPanel { Orientation = Orientation.Horizontal};
+            for (int i = 0; i < inputColor.Count; i++)
+            {
+                Rectangle rect = new Rectangle
+                {
+                    Width = 190,
+                    Height = 40,
+                    Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString(inputColor[i]))
+                };
+
+                if (secretCode[i] == inputColor[i])
+                {
+                    rect.Stroke = Brushes.DarkRed;
+                    rect.StrokeThickness = 5;
+                }
+                else if (secretCode.Contains(inputColor[i]))
+                {
+                    rect.Stroke = Brushes.Wheat;
+                    rect.StrokeThickness = 5;
+                }
+                else
+                {
+                    rect.Stroke = Brushes.Transparent;
+                    rect.StrokeThickness = 5;
+                }
+
+                colorPanel.Children.Add(rect);
+            }
+            colorHistoryListBox.Items.Add(new ListBoxItem { Content = colorPanel });
 
             for (int i = 0; i < 4; i++)
             {
@@ -224,24 +264,7 @@ namespace C_mastermindSprint1
                         checkColors = labelColorFour;
                         break;
                 }
-
-                if (secretCode[i] == inputColor[i])
-                {
-                    checkColors.BorderBrush = Brushes.DarkRed;
-                    checkColors.BorderThickness = new Thickness(7);
-                }
-                else if (secretCode.Contains(inputColor[i]))
-                {
-                    checkColors.BorderBrush = Brushes.Wheat;
-                    checkColors.BorderThickness = new Thickness(7);
-                }
-                else
-                {
-                    checkColors.BorderBrush = Brushes.Transparent;
-                    checkColors.BorderThickness = new Thickness(7);
-                }
             }
-
         }
         private void UpdateTitle()
         {
