@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.VisualBasic;
+using System.Diagnostics;
 using System.Printing;
 using System.Reflection;
 using System.Security.AccessControl;
@@ -202,20 +203,30 @@ namespace C_mastermindSprint1
             this.Title = $"Poging: " + guessAttempts;
             UpdateTitle();
 
-            if (guessAttempts >= 10)
-            {
-                timer.Stop();
-                MessageBox.Show($"Je hebt geen pogingen meer over. De correcte code was {string.Join(", ", secretCode)}", "Game Over", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            StartCountDown();
-
             string checkColor1 = comboBoxColour1.Text;
             string checkColor2 = comboBoxColour2.Text;
             string checkColor3 = comboBoxColour3.Text;
             string checkColor4 = comboBoxColour4.Text;
             List<string> inputColor = new List<string> { checkColor1, checkColor2, checkColor3, checkColor4 };
+
+            if (guessAttempts >= 10)
+            {
+                timer.Stop();
+                MessageBoxResult result = MessageBox.Show($"Je hebt geen pogingen meer over. De correcte code was {string.Join(", ", secretCode)}. Wil je opnieuw spelen?"
+                    , "Game Over", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    ResetGame();
+                }
+                else
+                {
+                    Application.Current.Shutdown();
+                }
+                return;
+            }
+
+            StartCountDown();
+
 
             StackPanel colorPanel = new StackPanel { Orientation = Orientation.Horizontal};
             for (int i = 0; i < inputColor.Count; i++)
@@ -250,7 +261,23 @@ namespace C_mastermindSprint1
             int penaltyPoints = CalculatePenaltyPoints(inputColor); // Berekening van strafpunten
             score -= penaltyPoints; // Aftrekken van strafpunten van de score
             labelScore.Content = $"Score: {score}"; // Bijwerken van de score
-
+            
+            if (inputColor.SequenceEqual(secretCode))
+            {
+                timer.Stop();
+                MessageBoxResult result = MessageBox.Show($"Proficiat, je hebt de code gekraakt in {guessAttempts} pogingen. Wil je opnieuw spelen?",
+                    "Gewonnen", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                if (result == MessageBoxResult.Yes)
+                {
+                    ResetGame();
+                }
+                else
+                {
+                    Application.Current.Shutdown();
+                }
+                return;
+            }
+            
             for (int i = 0; i < 4; i++)
             {
                 Label checkColors = null;
@@ -271,6 +298,33 @@ namespace C_mastermindSprint1
                         break;
                 }
             }            
+        }
+        private void ResetGame()
+        {
+            secretCode.Clear();
+            var randomCode = new Random();
+            for (int i = 0; i < 4; i++)
+            {
+                secretCode.Add(colors[randomCode.Next(colors.Count)]);
+            }
+
+            guessAttempts = 0;
+            score = 100;
+            labelScore.Content = $"Score: {score}";
+            colorHistoryListBox.Items.Clear();
+            this.Title = $"Poging: {guessAttempts}";
+            //reset comboboxes + labels.
+            comboBoxColour1.SelectedIndex = -1;
+            comboBoxColour2.SelectedIndex = -1;
+            comboBoxColour3.SelectedIndex = -1;
+            comboBoxColour4.SelectedIndex = -1;
+
+            labelColorOne.Background = new SolidColorBrush(Colors.Transparent);
+            labelColorTwo.Background = new SolidColorBrush(Colors.Transparent);
+            labelColorThree.Background = new SolidColorBrush(Colors.Transparent);
+            labelColorFour.Background = new SolidColorBrush(Colors.Transparent);
+            StartCountDown();
+
         }
         private int CalculatePenaltyPoints(List<string> userGuess)
         {
