@@ -31,10 +31,23 @@ namespace C_mastermindSprint1
         int guessAttempts = 0;
         DateTime startedGuessTime;
         int score = 100;
+
         public MainWindow()
         {
             InitializeComponent();
+            this.Closing += MainWindow_Closing;
         }
+
+        private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Weet je zeker dat je het spel wilt beëindigen?", 
+                "Afsluiten", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var randomCode = new Random();
@@ -298,6 +311,14 @@ namespace C_mastermindSprint1
                         break;
                 }
             }            
+        }
+        private void ConfirmExit()
+        {
+            MessageBoxResult result = MessageBox.Show("Weet je zeker dat je het spel wilt beëindigen?", "Bevestig Afsluiten", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown();
+            }
         }
         private void ResetGame()
         {
