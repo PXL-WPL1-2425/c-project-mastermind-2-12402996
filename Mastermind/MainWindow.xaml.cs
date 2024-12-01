@@ -1,4 +1,5 @@
-﻿using System.Printing;
+﻿using System.Diagnostics;
+using System.Printing;
 using System.Reflection;
 using System.Security.AccessControl;
 using System.Text;
@@ -28,6 +29,7 @@ namespace C_mastermindSprint1
         private List<string> secretCode = new List<string>();
         int guessAttempts = 0;
         DateTime startedGuessTime;
+        int score = 100;
         public MainWindow()
         {
             InitializeComponent();
@@ -245,6 +247,10 @@ namespace C_mastermindSprint1
             }
             colorHistoryListBox.Items.Add(new ListBoxItem { Content = colorPanel });
 
+            int penaltyPoints = CalculatePenaltyPoints(inputColor); // Berekening van strafpunten
+            score -= penaltyPoints; // Aftrekken van strafpunten van de score
+            labelScore.Content = $"Score: {score}"; // Bijwerken van de score
+
             for (int i = 0; i < 4; i++)
             {
                 Label checkColors = null;
@@ -264,7 +270,32 @@ namespace C_mastermindSprint1
                         checkColors = labelColorFour;
                         break;
                 }
+            }            
+        }
+        private int CalculatePenaltyPoints(List<string> userGuess)
+        {
+            int penaltyPoints = 0;
+
+            for (int i = 0; i < userGuess.Count; i++)
+            {
+                if (userGuess[i] == secretCode[i])
+                {
+                    // Correct color and position
+                    penaltyPoints += 0;
+                }
+                else if (secretCode.Contains(userGuess[i]))
+                {
+                    // Correct color but wrong position
+                    penaltyPoints += 1;
+                }
+                else
+                {
+                    // Color not in the code
+                    penaltyPoints += 2;
+                }
             }
+
+            return penaltyPoints;
         }
         private void UpdateTitle()
         {
